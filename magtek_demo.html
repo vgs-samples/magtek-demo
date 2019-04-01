@@ -1,6 +1,8 @@
 <html>
-<script src="jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/ACnN33wkJXPw5UA51EiDZL9i.js"></script>
+<head>
+  <script src="jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/ACnN33wkJXPw5UA51EiDZL9i.js"></script>
+</head>
 <body>
   <button id="swipeBtn" onclick="requestSwipe()">Request Swipe</button>
   <div id="swipeResult"></div>
@@ -11,71 +13,70 @@
     </div>
     <button type="submit" name="button">Submit</button>
   </form>
-  <!-- <div id="response"></div> -->
+  <div id="response"></div>
   <div>
     <b>Last4</b>: <span id="last4"></span>
     <br>
     <b>Cardholder Name</b>: <span id="ccName"></span>
   </div>
-<body>
-<script>
-function requestSwipe() {
-       $('#swipeBtn').get(0).disabled=true;
-        $.ajax({
-        	method: 'POST',
-          // url: 'http://localhost:9002/api/mtscrahost/RequestSmartCard',
-          // data: {
-          //     'WaitTime': 20,
-          //         'ConnectionType': 4,
-          //         'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
-          //         'TransactionType': '0x00',
-          //         'CardType': 3,
-          //         'Amount': 10,
-          //         'CashBack': 0,
-          //         'CurrencyCode': '0840',
-          //         'ReportOptions': 2,
-          //         'Options': 0
-          //
-          // },
-        	url: 'http://localhost:9002/api/mtscrahost/RequestCardSwipe',
-        	data: {
-        			'WaitTime': 10,
-	                'ConnectionType': 4,
-                  'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
+
+  <script>
+    function requestSwipe() {
+      $('#swipeBtn').get(0).disabled=true;
+      $.ajax({
+        method: 'POST',
+        // url: 'http://localhost:9002/api/mtscrahost/RequestSmartCard',
+        // data: {
+        //     'WaitTime': 20,
+        //     'ConnectionType': 4,
+        //     'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
+        //     'TransactionType': '0x00',
+        //     'CardType': 3,
+        //     'Amount': 10,
+        //     'CashBack': 0,
+        //     'CurrencyCode': '0840',
+        //     'ReportOptions': 2,
+        //     'Options': 0
+        // },
+        url: 'http://localhost:9002/api/mtscrahost/RequestCardSwipe',
+        data: {
+          'WaitTime': 10,
+          'ConnectionType': 4,
+          'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
         },
         success: function (result) {
-            $('#swipeBtn').get(0).disabled=false;
-            $('#swipeResult').get(0).innerHTML = JSON.stringify(result.CardSwipeOutput);
-            $('#last4').html(result.CardSwipeOutput.CardLast4);
-            $('#ccName').html(result.CardSwipeOutput.CardName);
-            collectInit(JSON.stringify(result.CardSwipeOutput));
+          $('#swipeBtn').get(0).disabled=false;
+          $('#swipeResult').get(0).innerHTML = JSON.stringify(result.CardSwipeOutput);
+          $('#last4').html(result.CardSwipeOutput.CardLast4);
+          $('#ccName').html(result.CardSwipeOutput.CardName);
+          collectInit(JSON.stringify(result.CardSwipeOutput));
         },
         error: function(result) {
           $('#swipeBtn').get(0).disabled=false;
-        	$('#swipeResult').get(0).innerHTML = 'error occurred!';
+          $('#swipeResult').get(0).innerHTML = 'error occurred!';
         }
-
-    });
-
+      });
+    
       function collectInit (cardData) {
         var f = VgForm.create('tnti7kkteax', function (state) {
       });
-
+    
       const secret = f.field('#cardData .fake-input', {
         type: 'text',
         name: 'secret',
         defaultValue: cardData,
         validations: ['required']
       });
-
+    
       document.getElementById('ccForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      f.submit('/post', {
-      }, function(status, data) {
-        document.getElementById('response').innerText = JSON.stringify(data, null, '  ');
-      });
-    }, false);
+        e.preventDefault();
+        f.submit('/post', {
+        }, function(status, data) {
+          document.getElementById('response').innerText = JSON.stringify(data, null, '  ');
+        });
+      }, false);
+    
     }
-}
-</script>
-<html
+  </script>
+<body>
+</html>
