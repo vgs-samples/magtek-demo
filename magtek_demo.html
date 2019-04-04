@@ -1,7 +1,18 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
   <script src="jquery-1.11.2.min.js"></script>
   <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/ACnN33wkJXPw5UA51EiDZL9i.js"></script>
+
+  <style>
+  #customer_info, #DIP_Data, #send_to_collect {
+    display: none;
+  }
+  </style>
 </head>
 <body>
   <button id="swipeBtn" onclick="requestSwipe()">Request Swipe</button>
@@ -11,21 +22,102 @@
     <div id="cardData">
       <div class="fake-input"></div>
     </div>
-    <button type="submit" name="button">Submit</button>
+    
   </form>
   <div id="response"></div>
-  <div>
+  <div id=customer_info>
     <b>Last4</b>: <span id="last4"></span>
     <br>
     <b>Cardholder Name</b>: <span id="ccName"></span>
+    <br/>
+    <button  id=dip_request type="submit" name="button" onclick="requestDIP()">Yes, Its mine card</button>
   </div>
 
+  <p id=DIP_Data>Insert Smart Card</p>
+  <button id=send_to_collect>Send Data to Collect</button>
   <script>
+    
+
+    function doSwipe() {
+      return new Promise( (resolve, reject) => {
+        $('#swipeBtn').get(0).disabled=true;
+        $.ajax({
+          method: 'POST',
+          url: 'http://localhost:9002/api/mtscrahost/RequestCardSwipe',
+          data: {
+            'WaitTime': 10,
+            'ConnectionType': 4,
+            'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
+          },
+          success: function (result) {
+            console.log('success', result)
+            $('#customer_info').show();
+            $('#swipeBtn').get(0).disabled=false;
+            $('#swipeResult').get(0).innerHTML = JSON.stringify(result.CardSwipeOutput);
+            $('#last4').html(result.CardSwipeOutput.CardLast4);
+            $('#ccName').html(result.CardSwipeOutput.CardName);
+            resolve();
+            // collectInit(JSON.stringify(result.CardSwipeOutput));
+          },
+          error: function(result) {
+            console.log('error', result)
+            $('#swipeBtn').get(0).disabled=false;
+            $('#swipeResult').get(0).innerHTML = 'error occurred!';
+          }
+        });
+      });
+    }
+
+    function requestDIP() {
+      return new Promise( (resolve, reject) => {
+        $('#dip_request').get(0).disabled=true;
+        $('#DIP_Data').show();
+        $.ajax({
+          method: 'POST',
+          url: 'http://localhost:9002/api/mtscrahost/RequestSmartCard',
+          data: {
+              'WaitTime': 20,
+              'ConnectionType': 4,
+              'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
+              'TransactionType': '0x00',
+              'CardType': 3,
+              'Amount': 10,
+              'CashBack': 0,
+              'CurrencyCode': '0840',
+              'ReportOptions': 2,
+              'Options': 0
+          },
+          success: function (result) {
+            console.log('success', result)
+            // $('#customer_info').show();
+            $('#dip_request').get(0).disabled=false;
+            $('#DIP_Data').get(0).innerHTML = JSON.stringify(result);
+            $('#send_to_collect').show();
+            // $('#swipeResult').get(0).innerHTML = JSON.stringify(result.CardSwipeOutput);
+            // $('#last4').html(result.CardSwipeOutput.CardLast4);
+            // $('#ccName').html(result.CardSwipeOutput.CardName);
+            resolve();
+            // collectInit(JSON.stringify(result.CardSwipeOutput));
+          },
+          error: function(result) {
+            console.log('error', result)
+            $('#swipeBtn').get(0).disabled=false;
+            $('#swipeResult').get(0).innerHTML = 'error occurred!';
+          }
+        });
+      });
+    }
+    
     function requestSwipe() {
-      $('#swipeBtn').get(0).disabled=true;
-      $.ajax({
-        method: 'POST',
-        // url: 'http://localhost:9002/api/mtscrahost/RequestSmartCard',
+      doSwipe();
+    }
+      
+  </script>
+</body>
+</html>
+
+
+<!-- // url: 'http://localhost:9002/api/mtscrahost/RequestSmartCard',
         // data: {
         //     'WaitTime': 20,
         //     'ConnectionType': 4,
@@ -37,46 +129,25 @@
         //     'CurrencyCode': '0840',
         //     'ReportOptions': 2,
         //     'Options': 0
-        // },
-        url: 'http://localhost:9002/api/mtscrahost/RequestCardSwipe',
-        data: {
-          'WaitTime': 10,
-          'ConnectionType': 4,
-          'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
-        },
-        success: function (result) {
-          $('#swipeBtn').get(0).disabled=false;
-          $('#swipeResult').get(0).innerHTML = JSON.stringify(result.CardSwipeOutput);
-          $('#last4').html(result.CardSwipeOutput.CardLast4);
-          $('#ccName').html(result.CardSwipeOutput.CardName);
-          collectInit(JSON.stringify(result.CardSwipeOutput));
-        },
-        error: function(result) {
-          $('#swipeBtn').get(0).disabled=false;
-          $('#swipeResult').get(0).innerHTML = 'error occurred!';
-        }
-      });
-    
-      function collectInit (cardData) {
-        var f = VgForm.create('tnti7kkteax', function (state) {
-      });
-    
-      const secret = f.field('#cardData .fake-input', {
-        type: 'text',
-        name: 'secret',
-        defaultValue: cardData,
-        validations: ['required']
-      });
-    
-      document.getElementById('ccForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        f.submit('/post', {
-        }, function(status, data) {
-          document.getElementById('response').innerText = JSON.stringify(data, null, '  ');
-        });
-      }, false);
-    
-    }
-  </script>
-<body>
-</html>
+        // }, -->
+
+<!-- 
+
+// function collectInit (cardData) {
+  //   var f = VgForm.create('tnti7kkteax', function (state) {});
+  // };
+
+  // const secret = f.field('#cardData .fake-input', {
+  //   type: 'text',
+  //   name: 'secret',
+  //   defaultValue: cardData,
+  //   validations: ['required']
+  // });
+
+  // document.getElementById('ccForm').addEventListener('submit', function(e) {
+  //   e.preventDefault();
+  //   f.submit('/post', {
+  //   }, function(status, data) {
+  //     document.getElementById('response').innerText = JSON.stringify(data, null, '  ');
+  //   });
+  // }, false); -->
