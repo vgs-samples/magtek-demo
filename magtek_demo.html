@@ -2,152 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <script src="jquery-1.11.2.min.js"></script>
-  <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/ACnN33wkJXPw5UA51EiDZL9i.js"></script>
+  <title>Magtek Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
 
   <style>
-  #customer_info, #DIP_Data, #send_to_collect {
-    display: none;
-  }
+    #dipResultWr, #swipeResultWr, #sendDataToColelct, #dipRequestWr, #dipResultWr, #error, #collectResultWr{
+      display: none;
+    }
+
+    #swipeResult, #dipResult {
+      width: 100%;
+      display: block;
+      overflow-wrap: break-word;
+      height: 800px;
+    }
+    #dipResult {
+      height: 150px;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+    #customer_info {
+      max-width: 500px;
+      margin: 0 auto 50px auto;
+    }
+
+    @keyframes blinker {
+      50% {
+        opacity: 0;
+      }
+    }
+    .blink {
+      animation: blinker 1s linear infinite;
+    }
   </style>
 </head>
 <body>
-  <button id="swipeBtn" onclick="requestSwipe()">Request Swipe</button>
-  <div id="swipeResult"></div>
-  <br>
-  <form id="ccForm">
-    <div id="cardData">
-      <div class="fake-input"></div>
-    </div>
-    
-  </form>
-  <div id="response"></div>
-  <div id=customer_info>
-    <b>Last4</b>: <span id="last4"></span>
-    <br>
-    <b>Cardholder Name</b>: <span id="ccName"></span>
-    <br/>
-    <button  id=dip_request type="submit" name="button" onclick="requestDIP()">Yes, Its mine card</button>
-  </div>
+<main class="section">
+  <div class="container has-text-centered">
+      <h1 class="title">Magtek Demo</h1>
+      <div class="card">
+        <div class="card-content">
+          <section id="swipeBtnWr">
+            <p>Press button and swipe card</p> <br>
+            <button id="swipeBtn" class="button is-large is-info" onclick="requestSwipe()">Swipe</button>
+          </section>
+          
+          <section id="swipeResultWr">
+            <div id=customer_info>
+              <p class="has-text-left">
+                <b>Last4</b>: <span id="last4"></span>
+              </p>
+              <p class="has-text-left">
+                <b>Cardholder</b>: <span id="ccName"></span>
+              </p>
+              <br/>
+              <button class="button is-large is-info" id=dip_request type="submit" name="button" onclick="requestDIP()">Yes, this is my card</button>
+            </div>
+            <textarea name="" id="swipeResult" width="100%"></textarea>
+          </section>
+          
+          <section id="dipRequestWr">
+            <p id="DIP_Data" class="blink">Insert Smart Card <span>...</span></p>
+          </section>
 
-  <p id=DIP_Data>Insert Smart Card</p>
-  <button id=send_to_collect>Send Data to Collect</button>
-  <script>
-    
+          <section id="dipResultWr">
+            <form id="ccForm">
+              <button type="submit" class="button is-large is-info" id=send_to_collect>Send Data Via Collect</button>  
+              <div id="cardData">
+                <div class="fake-input" id="dipResult"></div>
+              </div>
+            </form>
+          </section>
 
-    function doSwipe() {
-      return new Promise( (resolve, reject) => {
-        $('#swipeBtn').get(0).disabled=true;
-        $.ajax({
-          method: 'POST',
-          url: 'http://localhost:9002/api/mtscrahost/RequestCardSwipe',
-          data: {
-            'WaitTime': 10,
-            'ConnectionType': 4,
-            'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
-          },
-          success: function (result) {
-            console.log('success', result)
-            $('#customer_info').show();
-            $('#swipeBtn').get(0).disabled=false;
-            $('#swipeResult').get(0).innerHTML = JSON.stringify(result.CardSwipeOutput);
-            $('#last4').html(result.CardSwipeOutput.CardLast4);
-            $('#ccName').html(result.CardSwipeOutput.CardName);
-            resolve();
-            // collectInit(JSON.stringify(result.CardSwipeOutput));
-          },
-          error: function(result) {
-            console.log('error', result)
-            $('#swipeBtn').get(0).disabled=false;
-            $('#swipeResult').get(0).innerHTML = 'error occurred!';
-          }
-        });
-      });
-    }
-
-    function requestDIP() {
-      return new Promise( (resolve, reject) => {
-        $('#dip_request').get(0).disabled=true;
-        $('#DIP_Data').show();
-        $.ajax({
-          method: 'POST',
-          url: 'http://localhost:9002/api/mtscrahost/RequestSmartCard',
-          data: {
-              'WaitTime': 20,
-              'ConnectionType': 4,
-              'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
-              'TransactionType': '0x00',
-              'CardType': 3,
-              'Amount': 10,
-              'CashBack': 0,
-              'CurrencyCode': '0840',
-              'ReportOptions': 2,
-              'Options': 0
-          },
-          success: function (result) {
-            console.log('success', result)
-            // $('#customer_info').show();
-            $('#dip_request').get(0).disabled=false;
-            $('#DIP_Data').get(0).innerHTML = JSON.stringify(result);
-            $('#send_to_collect').show();
-            // $('#swipeResult').get(0).innerHTML = JSON.stringify(result.CardSwipeOutput);
-            // $('#last4').html(result.CardSwipeOutput.CardLast4);
-            // $('#ccName').html(result.CardSwipeOutput.CardName);
-            resolve();
-            // collectInit(JSON.stringify(result.CardSwipeOutput));
-          },
-          error: function(result) {
-            console.log('error', result)
-            $('#swipeBtn').get(0).disabled=false;
-            $('#swipeResult').get(0).innerHTML = 'error occurred!';
-          }
-        });
-      });
-    }
-    
-    function requestSwipe() {
-      doSwipe();
-    }
+          <section id="collectResultWr">
+            <p><b>Collect JS Response:</b> <span id="collectResult"></span></p>
+            <br/>
+            <a href=""><Button class="button is-large is-info">One More Time</Button></a>
+          </section>
+        </div>
+      </div>
       
-  </script>
+      <section id="error" class="notification is-danger">
+        Error, <a href="">reload page</a>
+      </section>
+    </div>
+  </main>
+      
+  <script src="jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/ACtqGmVyR2G9sAxL8p5fcHhT.js"></script>
+  <script src="./main.js"></script>
 </body>
 </html>
-
-
-<!-- // url: 'http://localhost:9002/api/mtscrahost/RequestSmartCard',
-        // data: {
-        //     'WaitTime': 20,
-        //     'ConnectionType': 4,
-        //     'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
-        //     'TransactionType': '0x00',
-        //     'CardType': 3,
-        //     'Amount': 10,
-        //     'CashBack': 0,
-        //     'CurrencyCode': '0840',
-        //     'ReportOptions': 2,
-        //     'Options': 0
-        // }, -->
-
-<!-- 
-
-// function collectInit (cardData) {
-  //   var f = VgForm.create('tnti7kkteax', function (state) {});
-  // };
-
-  // const secret = f.field('#cardData .fake-input', {
-  //   type: 'text',
-  //   name: 'secret',
-  //   defaultValue: cardData,
-  //   validations: ['required']
-  // });
-
-  // document.getElementById('ccForm').addEventListener('submit', function(e) {
-  //   e.preventDefault();
-  //   f.submit('/post', {
-  //   }, function(status, data) {
-  //     document.getElementById('response').innerText = JSON.stringify(data, null, '  ');
-  //   });
-  // }, false); -->
