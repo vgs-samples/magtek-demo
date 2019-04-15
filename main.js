@@ -1,3 +1,4 @@
+const devideID = '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}';
 function doSwipe() {
   return new Promise( (resolve, reject) => {
     $('#swipeBtn').get(0).disabled=true;
@@ -7,7 +8,7 @@ function doSwipe() {
       data: {
         'WaitTime': 10,
         'ConnectionType': 4,
-        'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
+        'DeviceID': devideID,
       },
       success: function (result) {
         console.log('success', result)
@@ -41,7 +42,7 @@ function requestDIP() {
       data: {
           'WaitTime': 20,
           'ConnectionType': 4,
-          'DeviceID': '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
+          'DeviceID': devideID,
           'TransactionType': '0x00',
           'CardType': 3,
           'Amount': 10,
