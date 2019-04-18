@@ -1,4 +1,24 @@
-const devideID = '\\\\?\\hid#vid_0801&pid_0019#7&19253a48&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}';
+var devideID;
+
+$(document).ready(function() {
+	$.ajax({
+      method: 'POST',
+      url: 'http://localhost:9002/api/mtscrahost/RequestDeviceList',
+      data: {
+        'WaitTime': 10,
+        'ConnectionType': 4,
+      },
+      success: function (result) {
+        console.log('success', result)
+        devideID = result.DeviceList[0].Value;
+      },
+      error: function(result) {
+        console.log('error', result)
+      }
+    });
+})
+
+
 function doSwipe() {
   return new Promise( (resolve, reject) => {
     $('#swipeBtn').get(0).disabled=true;
