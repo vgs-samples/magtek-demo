@@ -6,9 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Magtek Demo</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css">
   <style>
-    #dipResultWr, #swipeResultWr, #sendDataToColelct, #dipRequestWr, #dipResultWr, #error, #collectResultWr{
+    #dipResultWr, #dipResponceWr, #swipeResultWr, #sendDataToColelct, #dipRequestWr, #dipResultWr, #error, #CollectResponceWr{
       display: none;
     }
 
@@ -18,8 +18,11 @@
       overflow-wrap: break-word;
       height: 800px;
     }
-    #dipResult {
-      height: 150px;
+    #DIP_Data_result {
+      width: 100%;
+      overflow: hidden;
+      text-align: left;
+      word-wrap: break-word;
     }
     iframe {
       width: 100%;
@@ -29,7 +32,9 @@
       max-width: 500px;
       margin: 0 auto 50px auto;
     }
-
+    .input {
+      width: 300px;
+    }
     @keyframes blinker {
       50% {
         opacity: 0;
@@ -37,6 +42,9 @@
     }
     .blink {
       animation: blinker 1s linear infinite;
+    }
+    #CollectResponce {
+      text-align: left;
     }
   </style>
 </head>
@@ -46,42 +54,43 @@
       <h1 class="title">Magtek Demo</h1>
       <div class="card">
         <div class="card-content">
-          <section id="swipeBtnWr">
-            <p>Press button and swipe card</p> <br>
-            <button id="swipeBtn" class="button is-large is-info" onclick="requestSwipe()">Swipe</button>
-          </section>
-          
-          <section id="swipeResultWr">
-            <div id=customer_info>
-              <p class="has-text-left">
-                <b>Last4</b>: <span id="last4"></span>
-              </p>
-              <p class="has-text-left">
-                <b>Cardholder</b>: <span id="ccName"></span>
-              </p>
-              <br/>
-              <button class="button is-large is-info" id=dip_request type="submit" name="button" onclick="requestDIP()">Yes, this is my card</button>
-            </div>
-            <textarea name="" id="swipeResult" width="100%"></textarea>
-          </section>
-          
-          <section id="dipRequestWr">
-            <p id="DIP_Data" class="blink">Insert Smart Card <span>...</span></p>
+          <section>
+            <p class="blink" id="devide_id">
+              Getting device ID ...
+            </p>
           </section>
 
           <section id="dipResultWr">
+            <div id=customer_info>
+              <br/>
+              <button class="button is-large is-info" id=dip_request onclick="requestDIP()">Start Request</button>
+            </div>
+          </section>
+          
+          <section id="dipRequestWr">
+            <p id="DIP_Data_request" class="blink">Insert Smart Card <span>...</span></p>
+          </section>
+
+          <section id="dipResponceWr">
+            <b>ARQC:</b>
+            <div id="DIP_Data_result"></div>
+            <br><BR>
             <form id="ccForm">
-              <button type="submit" class="button is-large is-info" id=send_to_collect>Send Data Via Collect</button>  
               <div id="cardData">
-                <div class="fake-input" id="dipResult"></div>
+                <div class="fake-input input"></div>
               </div>
+              <br><br>
+              <button id="submit_button" type="submit" class="button is-large is-info">Save Via VGS-Collect</button>
             </form>
           </section>
 
-          <section id="collectResultWr">
-            <p><b>Collect JS Response:</b> <span id="collectResult"></span></p>
-            <br/>
-            <a href=""><Button class="button is-large is-info">One More Time</Button></a>
+          <section id="CollectResponceWr">
+            <pre>
+              Run cURL on terminal for get RAW data
+              <code class="bash" id="CollectResponce">
+
+              </code>
+            </pre>
           </section>
         </div>
       </div>
@@ -93,7 +102,8 @@
   </main>
       
   <script src="jquery-1.11.2.min.js"></script>
-  <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/ACtqGmVyR2G9sAxL8p5fcHhT.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+  <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/ACsoYjVGjbvBt2Jfj5FmfDQp.js"></script>
   <script src="./main.js"></script>
 </body>
 </html>
