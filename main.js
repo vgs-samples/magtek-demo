@@ -66,7 +66,7 @@ function requestDIP() {
 }
 
 function collectInit (arqc) {
-  var f = VgForm.create('tntn962vs90', function (state) {});
+  var f = VGSCollect.create('tntn962vs90', function (state) {});
 
   f.field('#cardData .fake-input', {
     type: 'card-security-code',
@@ -80,7 +80,10 @@ function collectInit (arqc) {
     $('#submit_button').addClass('is-loading')
     f.submit('/decrypt', {
       data: {
-        arqc: arqc,
+        type: "dip",
+        data: {
+          arqc: arqc
+        }
       }
     }, function(status, data) {
       console.log('data', data)
@@ -92,7 +95,7 @@ function collectInit (arqc) {
       curl https://echo.apps.verygood.systems/post -k \\
       -x US4uMsMXjxHRByT2sQWHzJW8:7354c963-484f-45af-9aa0-6430e1968834@tntn962vs90.sandbox.verygoodproxy.com:8080 \\
       -H "Content-type: application/json" \\
-      -d '${JSON.stringify(data)}'
+      -d '${JSON.stringify(data.json)}'
       `);
       $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);
