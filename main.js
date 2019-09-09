@@ -66,7 +66,7 @@ function requestDIP() {
 }
 
 function collectInit (arqc) {
-  var f = VGSCollect.create('tntn962vs90', function (state) {});
+  var f = VGSCollect.create('$TENANT_ID', function (state) {});
 
   f.field('#cardData .fake-input', {
     type: 'card-security-code',
