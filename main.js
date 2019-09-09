@@ -93,7 +93,7 @@ function collectInit (arqc) {
       $('#CollectResponce').html(`
       
       curl https://echo.apps.verygood.systems/post -k \\
-      -x <HTTPS_PROXY_USERNAME>:<HTTPS_PROXY_PASSWORD>@<TENANT_ID>.sandbox.verygoodproxy.com:8080 \\
+      -x $HTTPS_PROXY_USERNAME:$HTTPS_PROXY_PASSWORD@$TENANT_ID.sandbox.verygoodproxy.com:8080 \\
       -H "Content-type: application/json" \\
       -d '${JSON.stringify(data.json)}'
       `);
