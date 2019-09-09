@@ -66,6 +66,7 @@ function requestDIP() {
 }
 
 function collectInit (arqc) {
+  //Put your tenant id
   var f = VGSCollect.create('$TENANT_ID', function (state) {});
 
   f.field('#cardData .fake-input', {
