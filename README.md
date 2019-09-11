@@ -1,4 +1,4 @@
-# Demo for Very Good Security (VGS Collect.js) and Magtek card reader integration
+## Demo for Very Good Security (VGS Collect.js) and Magtek Card Reader Integration
 
 ## How to run:
 This Demo works only on windows platform.
@@ -11,6 +11,10 @@ If you have mac or Unix - use Virtual Machine (Parallels desktop - easiest way)
 - cange your `tenant id` in VGS Collect.js initialization to your's `VGSCollect.create('<tenant-id>', function (state) {});`
 4. Open `index.html` and follow step by step instructions
 
+For more information and quick start integration video check [docs](https://www.verygoodsecurity.com/docs/integrations/magtek)
 
-## Docs:
-Magtek https://www.magtek.com/content/documentationfiles/d998200207.pdf 
+
+## Resources:
+- [VGS Magtek Integation Docs](https://www.verygoodsecurity.com/docs/integrations/magtek)
+- [VGS Collect.js Docs](https://www.verygoodsecurity.com/docs/vgs-collect/what-is-it#what-is-it)
+- [Magtek Docs](https://www.magtek.com/content/documentationfiles/d998200207.pdf)
