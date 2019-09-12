@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Magtek Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  
+</head>
+<body>
+<main class="section">
+  <div class="container has-text-centered">
+      <h1 class="title">Magtek Demo</h1>
+      <div class="card">
+        <div class="card-content">
+          <section>
+            <p class="blink" id="devide_id">
+              Getting device ID ...
+            </p>
+          </section>
+
+          <section id="dipResultWr">
+            <div id=customer_info>
+              <br/>
+              <button class="button is-large is-info" id=dip_request onclick="requestDIP()">Start Request</button>
+            </div>
+          </section>
+          
+          <section id="dipRequestWr">
+            <p id="DIP_Data_request" class="blink">Insert Smart Card <span>...</span></p>
+          </section>
+
+          <section id="dipResponceWr">
+            <b>ARQC:</b>
+            <div id="DIP_Data_result"></div>
+            <br><BR>
+            <form id="ccForm">
+              <div id="cardData">
+                <div class="fake-input input"></div>
+              </div>
+              <br><br>
+              <button id="submit_button" type="submit" class="button is-large is-info">Save Via VGS-Collect</button>
+            </form>
+          </section>
+
+          <section id="CollectResponceWr">
+            <pre>
+              Run cURL on terminal for get RAW data
+              <code class="bash" id="CollectResponce">
+
+              </code>
+            </pre>
+          </section>
+        </div>
+      </div>
+      
+      <section id="error" class="notification is-danger">
+        Error, <a href="">reload page</a>
+      </section>
+    </div>
+  </main>
+      
+  <script src="../js/jquery-1.11.2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+  <!--Put your organization id-->
+  <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/$ORGANIZATION_ID.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>

@@ -2,109 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Magtek Demo</title>
+  <title>Magtek + VGS integrations</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css">
-  <style>
-    #dipResultWr, #dipResponceWr, #swipeResultWr, #sendDataToColelct, #dipRequestWr, #dipResultWr, #error, #CollectResponceWr{
-      display: none;
-    }
-
-    #swipeResult, #dipResult {
-      width: 100%;
-      display: block;
-      overflow-wrap: break-word;
-      height: 800px;
-    }
-    #DIP_Data_result {
-      width: 100%;
-      overflow: hidden;
-      text-align: left;
-      word-wrap: break-word;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-    }
-    #customer_info {
-      max-width: 500px;
-      margin: 0 auto 50px auto;
-    }
-    .input {
-      width: 300px;
-    }
-    @keyframes blinker {
-      50% {
-        opacity: 0;
-      }
-    }
-    .blink {
-      animation: blinker 1s linear infinite;
-    }
-    #CollectResponce {
-      text-align: left;
-    }
-  </style>
 </head>
 <body>
-<main class="section">
-  <div class="container has-text-centered">
-      <h1 class="title">Magtek Demo</h1>
-      <div class="card">
-        <div class="card-content">
-          <section>
-            <p class="blink" id="devide_id">
-              Getting device ID ...
-            </p>
-          </section>
-
-          <section id="dipResultWr">
-            <div id=customer_info>
-              <br/>
-              <button class="button is-large is-info" id=dip_request onclick="requestDIP()">Start Request</button>
-            </div>
-          </section>
-          
-          <section id="dipRequestWr">
-            <p id="DIP_Data_request" class="blink">Insert Smart Card <span>...</span></p>
-          </section>
-
-          <section id="dipResponceWr">
-            <b>ARQC:</b>
-            <div id="DIP_Data_result"></div>
-            <br><BR>
-            <form id="ccForm">
-              <div id="cardData">
-                <div class="fake-input input"></div>
-              </div>
-              <br><br>
-              <button id="submit_button" type="submit" class="button is-large is-info">Save Via VGS-Collect</button>
-            </form>
-          </section>
-
-          <section id="CollectResponceWr">
-            <pre>
-              Run cURL on terminal for get RAW data
-              <code class="bash" id="CollectResponce">
-
-              </code>
-            </pre>
-          </section>
-        </div>
+  <main class="section">
+    <div class="container">
+      <div class="col-mg-6">
+        <a href="./e-dynamo/index.html">Try E-dynamo</a>
       </div>
-      
-      <section id="error" class="notification is-danger">
-        Error, <a href="">reload page</a>
-      </section>
+      <a href="./t-dynamo/index.html">Try T-dynamo</a>
     </div>
   </main>
-      
-  <script src="jquery-1.11.2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
-  <!--Put your organization id-->
-  <script type="text/javascript" src="https://js.verygoodvault.com/vgs-collect/1/$ORGANIZATION_ID.js"></script>
-  <script src="./main.js"></script>
 </body>
 </html>
